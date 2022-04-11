@@ -7,53 +7,66 @@
       </el-scrollbar>
       <div class="kr-designer-tool_bar">
         <el-button size="mini" type="success" @click="saveTemp">保存</el-button>
-        <el-button size="mini" type="primary" @click="previewTemp">预览</el-button>
+        <el-button size="mini" type="primary" @click="previewTemp"
+          >预览</el-button
+        >
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import Viewport from './components/viewport/index.vue'
-import Panel from './components/panel/index.vue'
-import cloneDeep from 'lodash/cloneDeep'
+import Viewport from "./components/viewport/index.vue";
+import Panel from "./components/panel/index.vue";
+import cloneDeep from "lodash/cloneDeep";
 
 export default {
-  name: 'kr-print-designer',
+  name: "kr-print-designer",
   components: { Viewport, Panel },
   props: {
     widgetOptions: {
       type: Array,
-      default: () => [],
+      default: () => []
     },
     tempValue: {
       type: Object,
-      default: () => ({ title: 'demo', width: 750, height: 550, pageWidth: 750, pageHeight: 550, tempItems: [] }),
-    },
+      default: () => ({
+        title: "demo",
+        width: 750,
+        height: 550,
+        pageWidth: 750,
+        pageHeight: 550,
+        tempItems: []
+      })
+    }
   },
   created() {
-    this.initTemp(this.tempValue, this.widgetOptions)
+    this.initTemp(this.tempValue, this.widgetOptions);
   },
   methods: {
     // 保存模板
     saveTemp() {
-      let page = this.$vptd.state.page
-      this.$emit('save', cloneDeep(page))
+      let page = this.$vptd.state.page;
+      // console.log(getHTML("viewport"));
+      this.$emit("save", cloneDeep(page));
     },
     // 预览模板
     previewTemp() {
-      let page = { ...this.$vptd.state.page }
-      this.$lodop.previewTemp(cloneDeep(page))
+      let page = { ...this.$vptd.state.page };
+      this.$lodop.previewTemp(cloneDeep(page));
     },
 
     // 初始化设计器
     initTemp(tempValue, widgetOptions) {
-      this.$vptd.dispatch('designerInit', {
+      this.$vptd.dispatch("designerInit", {
         tempValue: cloneDeep(tempValue),
-        options: cloneDeep(widgetOptions),
-      })
-    },
-  },
+        options: cloneDeep(widgetOptions)
+      });
+    }
+  }
+};
+function getHTML(id) {
+  return document.getElementById(id).innerHTML;
 }
 </script>
 
